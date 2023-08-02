@@ -1,25 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
-
-function App() {
+import { connect } from "react-redux";
+function App({ testStore, onAddTrack }) {
+  console.log(testStore);
+  let trackInput = {};
+  function addTrack() {
+    console.log("addTrack:", trackInput.value);
+    onAddTrack(trackInput.value);
+    trackInput.value = "";
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <input
+        type="text"
+        ref={(input) => {
+          trackInput = input;
+        }}
+      />
+      <button onClick={addTrack}>Add track</button>
+      <ul>
+        {testStore.map((track, index) => {
+          return <li key={index}>{track}</li>;
+        })}
+      </ul>
     </div>
   );
 }
 
-export default App;
+export default connect(
+  (state) => ({
+    testStore: state,
+  }),
+  (dispatch) => ({
+    onAddTrack: (trackName) =>
+      dispatch({ type: "ADD_TRACK", payload: trackName }),
+  })
+)(App);
