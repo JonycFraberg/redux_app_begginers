@@ -7,16 +7,32 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
-const initialState = ["Track1", "Track2"];
+const initialState = {
+  tracks: ["Track1", "Track2"],
+  playlist: ["playlist1", "playlist2"],
+};
 
+// функция reducer
 function playlist(state = initialState, action) {
   if (action.type === "ADD_TRACK") {
-    return [...state, action.payload];
+    return {
+      ...state,
+      tracks: [...state.tracks, action.payload],
+    };
+  } else if (action.type === "DELETE_TRACK") {
+    return state;
+  } else if (action.type === "ADD_PLAYLIST") {
+    return state;
+  } else if (action.type === "DELETE_PLAYLIST") {
+    return state;
   }
   //console.log(action);
   return state;
 }
-const store = createStore(playlist); // хранилище данных в приложении
+const store = createStore(
+  playlist,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+); // хранилище данных в приложении
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
