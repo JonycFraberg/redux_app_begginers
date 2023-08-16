@@ -1,38 +1,43 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
-import { createStore } from "redux";
+// import { createStore, applyMiddleware } from "redux";
+import { configureStore } from "@reduxjs/toolkit";
+// import { composeWithDevTools } from "redux-devtools-extension";
+import thunk from "redux-thunk";
 
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import reducer from "./reducers/index";
 
-const initialState = {
-  tracks: ["Track1", "Track2"],
-  playlist: ["playlist1", "playlist2"],
-};
+// const initialState = {
+//   tracks: ["Track1", "Track2"],
+//   playlist: ["playlist1", "playlist2"],
+// };
 
-// функция reducer
-function playlist(state = initialState, action) {
-  if (action.type === "ADD_TRACK") {
-    return {
-      ...state,
-      tracks: [...state.tracks, action.payload],
-    };
-  } else if (action.type === "DELETE_TRACK") {
-    return state;
-  } else if (action.type === "ADD_PLAYLIST") {
-    return state;
-  } else if (action.type === "DELETE_PLAYLIST") {
-    return state;
-  }
-  //console.log(action);
-  return state;
-}
-const store = createStore(
-  playlist,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-); // хранилище данных в приложении
+// // функция reducer
+// function playlist(state = initialState, action) {
+//   if (action.type === "ADD_TRACK") {
+//     return {
+//       ...state,
+//       tracks: [...state.tracks, action.payload],
+//     };
+//   } else if (action.type === "DELETE_TRACK") {
+//     return state;
+//   } else if (action.type === "ADD_PLAYLIST") {
+//     return state;
+//   } else if (action.type === "DELETE_PLAYLIST") {
+//     return state;
+//   }
+//   //console.log(action);
+//   return state;
+// }
+const store = configureStore({
+  reducer,
+  middleware: [thunk],
+  devTools: process.env.NODE_ENV !== "production",
+}); // хранилище данных в приложении
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
